@@ -481,7 +481,7 @@
     return baseIndex;
   }
 
-  document.getElementById('pf-calcular').addEventListener('click', function(){
+  function calcularTalla(){
     var cintura = parseFloat(document.getElementById('pf-cintura').value);
     var cadera = parseFloat(document.getElementById('pf-cadera').value);
     var errorBox = document.getElementById('pf-error');
@@ -508,6 +508,14 @@
 
     var s = sizes[finalIndex];
 
+    // Para uso diario / moldeadora, bajamos una talla para un ajuste más ceñido
+    var tallaAjustada = false;
+    if(tipo === 'sin' && finalIndex > 0){
+      finalIndex = finalIndex - 1;
+      tallaAjustada = true;
+    }
+    s = sizes[finalIndex];
+
     document.getElementById('pf-res-talla').textContent = s.talla;
     document.getElementById('pf-res-col').textContent = s.col;
     document.getElementById('pf-res-usa').textContent = s.usa;
@@ -518,11 +526,13 @@
     } else if(cadera < sizes[0].hMin || cintura < sizes[0].cMin){
       msg = 'Tu medida está por debajo de la tabla estándar. Escríbenos por WhatsApp para confirmar tu talla.';
     } else if(distintas){
-      msg = 'Tu cintura corresponde a talla ' + sizes[idxCintura].talla + ', pero tu cadera corresponde a talla ' + sizes[idxCadera].talla + '. Te recomendamos ' + s.talla + ' para que no quede apretada en la cadera, siguiendo nuestra recomendación de guiarte por esa medida.';
+      msg = 'Tu cintura corresponde a talla ' + sizes[idxCintura].talla + ', pero tu cadera corresponde a talla ' + sizes[idxCadera].talla + '. Te recomendamos guiarte por la cadera' + (tallaAjustada ? ', y como es de uso diario/moldeadora, bajamos una talla para un ajuste más ceñido: ' + s.talla + '.' : ': ' + s.talla + '.');
     } else if(tipo === 'post'){
       msg = 'Por ser uso postquirúrgico, te recomendamos esta talla priorizando una compresión segura y cómoda.';
     } else if(tipo === 'postparto'){
       msg = 'Para etapa postparto, esta talla te dará el soporte adecuado sin quedar demasiado ajustada.';
+    } else if(tallaAjustada){
+      msg = 'Como es de uso diario/moldeadora, te recomendamos una talla más ceñida que la calculada por tu cadera, para un mejor moldeado.';
     } else {
       msg = 'Recuerda: si estás entre dos tallas y es una prenda moldeadora, puedes elegir la más ajustada si la toleras bien.';
     }
@@ -536,7 +546,20 @@
     if(activeRow) activeRow.classList.add('pf-active-row');
 
     resultBox.style.display = 'block';
-    resultBox.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  document.getElementById('pf-calcular').addEventListener('click', function(){
+    calcularTalla();
+    document.getElementById('pf-result').scrollIntoView({behavior:'smooth', block:'nearest'});
+  });
+
+  // Recalcula automaticamente al cambiar el tipo de uso, solo si ya se calculo una vez
+  document.querySelectorAll('input[name="pf-tipo"]').forEach(function(radio){
+    radio.addEventListener('change', function(){
+      if(document.getElementById('pf-result').style.display === 'block'){
+        calcularTalla();
+      }
+    });
   });
 })();
 </script>
