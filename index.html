@@ -37,10 +37,78 @@
   line-height:1.15;
 }
 #pf-tallas-wrap p.pf-sub{
-  margin:0 0 28px;
+  margin:0 0 22px;
   color:#d7e3da;
   font-size:14.5px;
   max-width:560px;
+}
+
+/* ---- aviso importante (arriba) ---- */
+#pf-tallas-wrap .pf-alert-top{
+  display:flex;
+  gap:13px;
+  align-items:flex-start;
+  background:linear-gradient(135deg,rgba(201,168,106,.20),rgba(201,168,106,.06));
+  border:1.5px solid var(--pf-gold);
+  border-radius:14px;
+  padding:16px 18px;
+  margin-bottom:26px;
+}
+#pf-tallas-wrap .pf-alert-icon{
+  font-size:21px;
+  line-height:1;
+  flex-shrink:0;
+  margin-top:1px;
+}
+#pf-tallas-wrap .pf-alert-text{
+  font-size:13.5px;
+  line-height:1.55;
+  color:#f3ecd9;
+}
+#pf-tallas-wrap .pf-alert-text b{color:var(--pf-gold);}
+
+/* ---- tabs ---- */
+#pf-tallas-wrap .pf-tabs{
+  display:flex;
+  gap:6px;
+  margin-bottom:24px;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+#pf-tallas-wrap .pf-tab-btn{
+  flex:1;
+  background:transparent;
+  border:none;
+  color:#a9b8af;
+  font-family:inherit;
+  font-size:12.8px;
+  font-weight:700;
+  letter-spacing:.01em;
+  padding:9px 4px 13px;
+  cursor:pointer;
+  position:relative;
+  transition:color .2s;
+  border-radius:8px 8px 0 0;
+}
+#pf-tallas-wrap .pf-tab-btn:hover{color:#e7eee9;}
+#pf-tallas-wrap .pf-tab-btn.active{color:var(--pf-gold);}
+#pf-tallas-wrap .pf-tab-btn.active::after{
+  content:"";
+  position:absolute;
+  left:6px;
+  right:6px;
+  bottom:-1px;
+  height:2px;
+  background:var(--pf-gold);
+  border-radius:2px;
+}
+#pf-tallas-wrap .pf-panel{display:none;}
+#pf-tallas-wrap .pf-panel.active{
+  display:block;
+  animation:pfFadeIn .35s ease;
+}
+@keyframes pfFadeIn{
+  from{opacity:0;transform:translateY(5px);}
+  to{opacity:1;transform:translateY(0);}
 }
 
 /* ---- como medir ---- */
@@ -48,13 +116,19 @@
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:12px;
-  margin-bottom:30px;
+  margin-bottom:8px;
 }
 #pf-tallas-wrap .pf-howto-card{
   background:rgba(255,255,255,.05);
   border:1px solid rgba(255,255,255,.08);
   border-radius:12px;
   padding:14px 16px;
+  transition:transform .18s ease,background .18s ease,border-color .18s ease;
+}
+#pf-tallas-wrap .pf-howto-card:hover{
+  transform:translateY(-3px);
+  background:rgba(255,255,255,.085);
+  border-color:rgba(255,255,255,.2);
 }
 #pf-tallas-wrap .pf-howto-card b{
   display:block;
@@ -71,6 +145,25 @@
   border:1px dashed var(--pf-gold);
 }
 #pf-tallas-wrap .pf-howto-tip b{color:var(--pf-gold);}
+#pf-tallas-wrap .pf-howto-tip:hover{transform:none;}
+
+#pf-tallas-wrap .pf-goto-calc{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:18px;
+  background:transparent;
+  border:1.5px solid var(--pf-gold);
+  color:var(--pf-gold);
+  font-family:inherit;
+  font-size:13px;
+  font-weight:700;
+  padding:10px 16px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:.18s;
+}
+#pf-tallas-wrap .pf-goto-calc:hover{background:rgba(201,168,106,.14);}
 
 /* ---- calculadora ---- */
 #pf-tallas-wrap .pf-calc{
@@ -78,7 +171,6 @@
   color:var(--pf-ink);
   border-radius:16px;
   padding:26px 24px 28px;
-  margin-bottom:34px;
   position:relative;
   overflow:hidden;
 }
@@ -126,6 +218,7 @@
   font-family:inherit;
   background:#fff;
   color:var(--pf-ink);
+  transition:border-color .15s,box-shadow .15s;
 }
 #pf-tallas-wrap input[type="number"]:focus,
 #pf-tallas-wrap select:focus{
@@ -168,6 +261,7 @@
   border-color:var(--pf-green);
   color:#fff;
 }
+#pf-tallas-wrap .pf-radio-pill:hover span{border-color:var(--pf-green-soft);}
 #pf-tallas-wrap button.pf-btn{
   width:100%;
   background:var(--pf-green);
@@ -180,9 +274,10 @@
   letter-spacing:.02em;
   cursor:pointer;
   font-family:inherit;
-  transition:.15s;
+  transition:background .15s,transform .1s;
 }
 #pf-tallas-wrap button.pf-btn:hover{background:var(--pf-green-soft);}
+#pf-tallas-wrap button.pf-btn:active{transform:scale(.99);}
 #pf-tallas-wrap .pf-error{
   display:none;
   background:#fbe9e7;
@@ -202,6 +297,13 @@
   border-radius:14px;
   padding:22px 22px 20px;
   position:relative;
+}
+#pf-tallas-wrap .pf-result.pf-show{
+  animation:pfPop .42s cubic-bezier(.16,1,.3,1);
+}
+@keyframes pfPop{
+  0%{opacity:0;transform:scale(.96) translateY(6px);}
+  100%{opacity:1;transform:scale(1) translateY(0);}
 }
 #pf-tallas-wrap .pf-result::before{
   content:"";
@@ -256,6 +358,55 @@
   line-height:1.5;
 }
 
+/* ---- medidor visual ---- */
+#pf-tallas-wrap .pf-meter-wrap{
+  margin-top:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  background:rgba(255,255,255,.05);
+  border-radius:10px;
+  padding:14px 16px;
+}
+#pf-tallas-wrap .pf-meter-label{
+  display:flex;
+  justify-content:space-between;
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  color:var(--pf-sage);
+  margin-bottom:6px;
+}
+#pf-tallas-wrap .pf-meter-label span:last-child{color:var(--pf-gold);font-weight:800;}
+#pf-tallas-wrap .pf-meter-track{
+  position:relative;
+  height:6px;
+  border-radius:4px;
+  background:rgba(255,255,255,.14);
+  overflow:visible;
+}
+#pf-tallas-wrap .pf-meter-fill{
+  position:absolute;
+  left:0;top:0;
+  height:100%;
+  border-radius:4px;
+  background:linear-gradient(90deg,var(--pf-sage-deep),var(--pf-gold));
+  width:0%;
+  transition:width .55s ease;
+}
+#pf-tallas-wrap .pf-meter-dot{
+  position:absolute;
+  top:50%;
+  left:0%;
+  width:11px;height:11px;
+  border-radius:50%;
+  background:var(--pf-cream);
+  border:2px solid var(--pf-gold);
+  transform:translate(-50%,-50%);
+  transition:left .55s ease;
+}
+
 /* ---- tabla ---- */
 #pf-tallas-wrap .pf-table-title{
   font-size:20px;
@@ -282,28 +433,22 @@
   padding:10px 8px;
   color:var(--pf-ink);
 }
-#pf-tallas-wrap tbody tr{background:#fff;}
+#pf-tallas-wrap tbody tr{background:#fff;transition:background .15s;}
 #pf-tallas-wrap tbody tr:nth-child(even){background:var(--pf-sage);}
+#pf-tallas-wrap tbody tr:hover{background:#e7f0db;}
 #pf-tallas-wrap tbody tr.pf-active-row{
   box-shadow:inset 0 0 0 2px var(--pf-gold);
 }
 #pf-tallas-wrap tbody td:first-child{font-weight:700;}
 
-/* ---- conciencia ---- */
-#pf-tallas-wrap .pf-conciencia{
-  background:rgba(255,255,255,.05);
-  border-left:3px solid var(--pf-gold);
-  border-radius:0 10px 10px 0;
-  padding:16px 18px;
-  font-size:13.5px;
-  line-height:1.6;
-  color:#dce6df;
-  margin-bottom:6px;
+#pf-tallas-wrap .pf-between-note{
+  font-size:12.5px;
+  color:#cdd9d2;
+  margin:-4px 0 8px;
 }
-#pf-tallas-wrap .pf-conciencia b{color:var(--pf-gold);}
 #pf-tallas-wrap .pf-signature{
   text-align:center;
-  margin-top:26px;
+  margin-top:28px;
   font-family:'Playfair Display',Georgia,serif;
   font-style:italic;
   font-size:18px;
@@ -316,6 +461,8 @@
   #pf-tallas-wrap .pf-howto{grid-template-columns:1fr;}
   #pf-tallas-wrap .pf-field-row{grid-template-columns:1fr;}
   #pf-tallas-wrap .pf-result-size{font-size:38px;}
+  #pf-tallas-wrap .pf-tab-btn{font-size:11.2px;padding:8px 2px 12px;}
+  #pf-tallas-wrap .pf-alert-top{padding:13px 14px;}
 }
 </style>
 
@@ -326,99 +473,137 @@
 <h2 class="pf-serif">¿Cómo tomarte las medidas correctamente?</h2>
 <p class="pf-sub">Sigue estas recomendaciones y luego usa la calculadora para encontrar tu talla exacta, en minutos y desde tu casa.</p>
 
-<div class="pf-howto">
-  <div class="pf-howto-card">
-    <b>Ropa</b>
-    <span>Usa ropa ajustada o toma las medidas sobre la ropa interior.</span>
-  </div>
-  <div class="pf-howto-card">
-    <b>Cinta métrica</b>
-    <span>Colócala directamente sobre la piel, sin apretar ni dejarla floja.</span>
-  </div>
-  <div class="pf-howto-card">
-    <b>Postura</b>
-    <span>Párate derecha y relajada. No saques el abdomen ni lo contraigas.</span>
-  </div>
-  <div class="pf-howto-card">
-    <b>Unidad</b>
-    <span>Mide siempre en centímetros para mayor precisión.</span>
-  </div>
-  <div class="pf-howto-card pf-howto-tip">
-    <b>🪞 Tip extra</b>
-    <span>Hazlo frente a un espejo o pide ayuda a alguien para mayor precisión. Anota tus medidas y tenlas siempre a mano para tus próximas compras en Pacific Fajas. 💖</span>
+<!-- ===== AVISO IMPORTANTE (arriba) ===== -->
+<div class="pf-alert-top">
+  <div class="pf-alert-icon">⚠️</div>
+  <div class="pf-alert-text">
+    <b>Ten en cuenta:</b> cada marca de fajas y moldeadores maneja su propia tabla de tallas — una talla "M" en Pacific Fajas puede no ser igual a una "M" de otra marca o de tu ropa habitual. Por eso, te recomendamos guiarte siempre por tus medidas en centímetros (cintura y cadera) y no por la talla que usas normalmente en ropa o en otras marcas.
   </div>
 </div>
 
-<!-- ===== CALCULADORA ===== -->
-<div class="pf-calc">
-  <h3 class="pf-serif">📏 Calculadora de talla</h3>
-  <p class="pf-calc-note">Ingresa tus medidas en centímetros y te decimos tu talla Pacific Fajas, con su equivalencia en Colombia y USA.</p>
+<!-- ===== TABS ===== -->
+<div class="pf-tabs" role="tablist">
+  <button class="pf-tab-btn active" data-target="pf-panel-howto" type="button">📏 Cómo medir</button>
+  <button class="pf-tab-btn" data-target="pf-panel-calc" type="button">🧮 Calculadora</button>
+  <button class="pf-tab-btn" data-target="pf-panel-tabla" type="button">📋 Tabla completa</button>
+</div>
 
-  <div class="pf-field-row">
-    <div>
-      <label for="pf-cintura">Cintura (cm)</label>
-      <input type="number" id="pf-cintura" min="40" max="160" placeholder="Ej: 72">
+<!-- ===== PANEL: COMO MEDIR ===== -->
+<div class="pf-panel active" id="pf-panel-howto">
+  <div class="pf-howto">
+    <div class="pf-howto-card">
+      <b>Ropa</b>
+      <span>Usa ropa ajustada o toma las medidas sobre la ropa interior.</span>
     </div>
-    <div>
-      <label for="pf-cadera">Cadera (cm)</label>
-      <input type="number" id="pf-cadera" min="50" max="170" placeholder="Ej: 98">
+    <div class="pf-howto-card">
+      <b>Cinta métrica</b>
+      <span>Colócala directamente sobre la piel, sin apretar ni dejarla floja.</span>
     </div>
-  </div>
-
-  <div class="pf-field-full">
-    <label>¿Cuál es tu situación actual?</label>
-    <div class="pf-radio-group">
-      <label class="pf-radio-pill">
-        <input type="radio" name="pf-tipo" value="sin" checked>
-        <span>Uso diario / Moldeadora</span>
-      </label>
-      <label class="pf-radio-pill">
-        <input type="radio" name="pf-tipo" value="post">
-        <span>Postquirúrgica</span>
-      </label>
-      <label class="pf-radio-pill">
-        <input type="radio" name="pf-tipo" value="postparto">
-        <span>Postparto</span>
-      </label>
+    <div class="pf-howto-card">
+      <b>Postura</b>
+      <span>Párate derecha y relajada. No saques el abdomen ni lo contraigas.</span>
+    </div>
+    <div class="pf-howto-card">
+      <b>Unidad</b>
+      <span>Mide siempre en centímetros para mayor precisión.</span>
+    </div>
+    <div class="pf-howto-card pf-howto-tip">
+      <b>🪞 Tip extra</b>
+      <span>Hazlo frente a un espejo o pide ayuda a alguien para mayor precisión. Anota tus medidas y tenlas siempre a mano para tus próximas compras en Pacific Fajas. 💖</span>
     </div>
   </div>
+  <button class="pf-goto-calc" id="pf-goto-calc" type="button">Ir a la calculadora →</button>
+</div>
 
-  <button class="pf-btn" id="pf-calcular">Calcular mi talla</button>
-  <div class="pf-error" id="pf-error">Por favor ingresa tu cintura y tu cadera en centímetros para calcular tu talla.</div>
+<!-- ===== PANEL: CALCULADORA ===== -->
+<div class="pf-panel" id="pf-panel-calc">
+  <div class="pf-calc">
+    <h3 class="pf-serif">📏 Calculadora de talla</h3>
+    <p class="pf-calc-note">Ingresa tus medidas en centímetros y te decimos tu talla Pacific Fajas, con su equivalencia en Colombia y USA.</p>
 
-  <div class="pf-result" id="pf-result">
-    <div class="pf-result-tag">
-      <div class="pf-result-label">Tu talla Pacific Fajas</div>
-      <div class="pf-result-size" id="pf-res-talla">—</div>
-      <div class="pf-result-equiv">
-        <div>Colombia<b id="pf-res-col">—</b></div>
-        <div>USA<b id="pf-res-usa">—</b></div>
+    <div class="pf-field-row">
+      <div>
+        <label for="pf-cintura">Cintura (cm)</label>
+        <input type="number" id="pf-cintura" min="40" max="160" placeholder="Ej: 72">
+      </div>
+      <div>
+        <label for="pf-cadera">Cadera (cm)</label>
+        <input type="number" id="pf-cadera" min="50" max="170" placeholder="Ej: 98">
       </div>
     </div>
-    <div class="pf-result-msg" id="pf-res-msg"></div>
+
+    <div class="pf-field-full">
+      <label>¿Cuál es tu situación actual?</label>
+      <div class="pf-radio-group">
+        <label class="pf-radio-pill">
+          <input type="radio" name="pf-tipo" value="sin" checked>
+          <span>Uso diario / Moldeadora</span>
+        </label>
+        <label class="pf-radio-pill">
+          <input type="radio" name="pf-tipo" value="post">
+          <span>Postquirúrgica</span>
+        </label>
+        <label class="pf-radio-pill">
+          <input type="radio" name="pf-tipo" value="postparto">
+          <span>Postparto</span>
+        </label>
+      </div>
+    </div>
+
+    <button class="pf-btn" id="pf-calcular">Calcular mi talla</button>
+    <div class="pf-error" id="pf-error">Por favor ingresa tu cintura y tu cadera en centímetros para calcular tu talla.</div>
+
+    <div class="pf-result" id="pf-result">
+      <div class="pf-result-tag">
+        <div class="pf-result-label">Tu talla Pacific Fajas</div>
+        <div class="pf-result-size" id="pf-res-talla">—</div>
+        <div class="pf-result-equiv">
+          <div>Colombia<b id="pf-res-col">—</b></div>
+          <div>USA<b id="pf-res-usa">—</b></div>
+        </div>
+      </div>
+      <div class="pf-result-msg" id="pf-res-msg"></div>
+
+      <div class="pf-meter-wrap">
+        <div>
+          <div class="pf-meter-label"><span>Cintura</span><span id="pf-meter-cintura-val">—</span></div>
+          <div class="pf-meter-track">
+            <div class="pf-meter-fill" id="pf-meter-cintura-fill"></div>
+            <div class="pf-meter-dot" id="pf-meter-cintura-dot"></div>
+          </div>
+        </div>
+        <div>
+          <div class="pf-meter-label"><span>Cadera</span><span id="pf-meter-cadera-val">—</span></div>
+          <div class="pf-meter-track">
+            <div class="pf-meter-fill" id="pf-meter-cadera-fill"></div>
+            <div class="pf-meter-dot" id="pf-meter-cadera-dot"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="pf-goto-calc" id="pf-goto-tabla" type="button" style="margin-top:18px;width:100%;justify-content:center;">Ver tabla completa →</button>
+    </div>
   </div>
 </div>
 
-<!-- ===== TABLA ===== -->
-<h3 class="pf-serif pf-table-title">Tabla de medidas completa</h3>
-<div class="pf-table-scroll">
-  <table id="pf-tabla">
-    <thead>
-      <tr>
-        <th>Talla<br>Pacific Fajas</th>
-        <th>Talla<br>Colombia</th>
-        <th>Talla<br>USA</th>
-        <th>Cintura (cm)</th>
-        <th>Cadera (cm)</th>
-      </tr>
-    </thead>
-    <tbody id="pf-tabla-body"></tbody>
-  </table>
-</div>
-<p style="font-size:12.5px;color:#cdd9d2;margin:-4px 0 26px;">⭐ Si estás entre dos tallas: para fajas postquirúrgicas o postparto elige la talla mayor; si es de uso diario/moldeadora, elige la más ajustada si la toleras.</p>
-
-<div class="pf-conciencia">
-  <b>Ten en cuenta:</b> cada marca de fajas y moldeadores maneja su propia tabla de tallas — una talla "M" en Pacific Fajas puede no ser igual a una "M" de otra marca o de tu ropa habitual. Por eso, te recomendamos guiarte siempre por tus medidas en centímetros (cintura y cadera) y no por la talla que usas normalmente en ropa o en otras marcas.
+<!-- ===== PANEL: TABLA ===== -->
+<div class="pf-panel" id="pf-panel-tabla">
+  <h3 class="pf-serif pf-table-title">Tabla de medidas completa</h3>
+  <div class="pf-table-scroll">
+    <table id="pf-tabla">
+      <thead>
+        <tr>
+          <th>Talla<br>Pacific Fajas</th>
+          <th>Talla<br>Colombia</th>
+          <th>Talla<br>USA</th>
+          <th>Cintura (cm)</th>
+          <th>Cadera (cm)</th>
+        </tr>
+      </thead>
+      <tbody id="pf-tabla-body"></tbody>
+    </table>
+  </div>
+  <p class="pf-between-note">⭐ Si estás entre dos tallas: para fajas postquirúrgicas o postparto elige la talla mayor; si es de uso diario/moldeadora, elige la más ajustada si la toleras.</p>
 </div>
 
 <div class="pf-signature">Verse bien, para sentirse bien.</div>
@@ -545,7 +730,23 @@
     var activeRow = document.querySelector('#pf-tabla tbody tr[data-idx="'+finalIndex+'"]');
     if(activeRow) activeRow.classList.add('pf-active-row');
 
+    // ---- medidor visual: ubica cintura y cadera dentro del rango completo de la tabla ----
+    // (solo de presentación, no cambia la talla calculada arriba)
+    var overallCMin = sizes[0].cMin, overallCMax = sizes[sizes.length-1].cMax;
+    var overallHMin = sizes[0].hMin, overallHMax = sizes[sizes.length-1].hMax;
+    var pctC = Math.min(100, Math.max(0, (cintura - overallCMin) / (overallCMax - overallCMin) * 100));
+    var pctH = Math.min(100, Math.max(0, (cadera - overallHMin) / (overallHMax - overallHMin) * 100));
+    document.getElementById('pf-meter-cintura-val').textContent = cintura + ' cm';
+    document.getElementById('pf-meter-cadera-val').textContent = cadera + ' cm';
+    document.getElementById('pf-meter-cintura-fill').style.width = pctC + '%';
+    document.getElementById('pf-meter-cintura-dot').style.left = pctC + '%';
+    document.getElementById('pf-meter-cadera-fill').style.width = pctH + '%';
+    document.getElementById('pf-meter-cadera-dot').style.left = pctH + '%';
+
     resultBox.style.display = 'block';
+    resultBox.classList.remove('pf-show');
+    void resultBox.offsetWidth; // reinicia la animacion si se calcula varias veces
+    resultBox.classList.add('pf-show');
   }
 
   document.getElementById('pf-calcular').addEventListener('click', function(){
@@ -561,5 +762,33 @@
       }
     });
   });
+
+  // ---- navegacion por pestañas (solo formato/visual, no afecta la calculadora) ----
+  var tabBtns = document.querySelectorAll('.pf-tab-btn');
+  var panels = document.querySelectorAll('.pf-panel');
+
+  function activarTab(targetId){
+    tabBtns.forEach(function(b){
+      b.classList.toggle('active', b.getAttribute('data-target') === targetId);
+    });
+    panels.forEach(function(p){
+      p.classList.toggle('active', p.id === targetId);
+    });
+  }
+
+  tabBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      activarTab(btn.getAttribute('data-target'));
+    });
+  });
+
+  var gotoCalc = document.getElementById('pf-goto-calc');
+  if(gotoCalc){
+    gotoCalc.addEventListener('click', function(){ activarTab('pf-panel-calc'); });
+  }
+  var gotoTabla = document.getElementById('pf-goto-tabla');
+  if(gotoTabla){
+    gotoTabla.addEventListener('click', function(){ activarTab('pf-panel-tabla'); });
+  }
 })();
 </script>
