@@ -1,8 +1,8 @@
 <div id="pf-tallas-wrap">
 <style>
 #pf-tallas-wrap{
-  /* Fondo verde más claro y suave */
-  --pf-green-dark:#5a7d71; 
+  /* Se modificó el color de fondo a un verde más claro */
+  --pf-green-dark:#48695d; 
   --pf-green:#2c4a42;
   --pf-green-soft:#3c5e54;
   --pf-sage:#cfe0bb;
@@ -33,12 +33,18 @@
   margin-bottom:14px;
 }
 #pf-tallas-wrap h2{
-  font-size:32px;
-  margin:0 0 24px;
+  font-size:30px;
+  margin:0 0 6px;
   line-height:1.15;
 }
+#pf-tallas-wrap p.pf-sub{
+  margin:0 0 22px;
+  color:#d7e3da;
+  font-size:14.5px;
+  max-width:560px;
+}
 
-/* ---- aviso importante ---- */
+/* ---- aviso importante (arriba) ---- */
 #pf-tallas-wrap .pf-alert-top{
   display:flex;
   gap:13px;
@@ -63,6 +69,16 @@
 #pf-tallas-wrap .pf-alert-text b{color:var(--pf-gold);}
 
 /* ---- calculadora ---- */
+#pf-tallas-wrap .pf-panel{display:none;}
+#pf-tallas-wrap .pf-panel.active{
+  display:block;
+  animation:pfFadeIn .35s ease;
+}
+@keyframes pfFadeIn{
+  from{opacity:0;transform:translateY(5px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
 #pf-tallas-wrap .pf-calc{
   background:var(--pf-cream);
   color:var(--pf-ink);
@@ -186,7 +202,7 @@
   margin-top:14px;
 }
 
-/* ---- resultado ---- */
+/* ---- resultado: etiqueta tipo tag de tela ---- */
 #pf-tallas-wrap .pf-result{
   display:none;
   margin-top:24px;
@@ -325,77 +341,79 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,500&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-<span class="pf-eyebrow">Pacific Fajas</span>
-<h2 class="pf-serif">Calcula tu talla ideal Pacific Fajas</h2>
+<span class="pf-eyebrow">Pacific Fajas · Guía de tallas</span>
+<h2 class="pf-serif">¿Cómo tomarte las medidas correctamente?</h2>
+<p class="pf-sub">Sigue estas recomendaciones y luego usa la calculadora para encontrar tu talla exacta, en minutos y desde tu casa.</p>
 
-<!-- ===== AVISO IMPORTANTE ===== -->
 <div class="pf-alert-top">
   <div class="pf-alert-icon">⚠️</div>
   <div class="pf-alert-text">
-    <b>Ten en cuenta:</b> cada marca de fajas y moldeadores maneja su propia tabla de tallas. Te recomendamos guiarte siempre por tus medidas en centímetros (cintura y cadera) y no por la talla que usas habitualmente en otras marcas.
+    <b>Ten en cuenta:</b> cada marca de fajas y moldeadores maneja su propia tabla de tallas — una talla "M" en Pacific Fajas puede no ser igual a una "M" de otra marca o de tu ropa habitual. Por eso, te recomendamos guiarte siempre por tus medidas en centímetros (cintura y cadera) y no por la talla que usas normalmente en ropa o en otras marcas.
   </div>
 </div>
 
-<div class="pf-calc">
-  <h3 class="pf-serif">📏 Calculadora de talla</h3>
-  <p class="pf-calc-note">Ingresa tus medidas y descubre tu talla ideal en segundos.</p>
+<div class="pf-panel active" id="pf-panel-calc">
+  <div class="pf-calc">
+    <h3 class="pf-serif">📏 Calculadora de talla</h3>
+    <p class="pf-calc-note">Ingresa tus medidas en centímetros y te decimos tu talla Pacific Fajas, con su equivalencia en Colombia y USA.</p>
 
-  <div class="pf-field-row">
-    <div>
-      <label for="pf-cintura">Cintura (cm)</label>
-      <input type="number" id="pf-cintura" min="40" max="160" placeholder="Ej: 72">
-    </div>
-    <div>
-      <label for="pf-cadera">Cadera (cm)</label>
-      <input type="number" id="pf-cadera" min="50" max="170" placeholder="Ej: 98">
-    </div>
-  </div>
-
-  <div class="pf-field-full">
-    <label>¿Cuál es tu situación actual?</label>
-    <div class="pf-radio-group">
-      <label class="pf-radio-pill">
-        <input type="radio" name="pf-tipo" value="sin" checked>
-        <span>Uso diario</span>
-      </label>
-      <label class="pf-radio-pill">
-        <input type="radio" name="pf-tipo" value="post">
-        <span>Postquirúrgica</span>
-      </label>
-      <label class="pf-radio-pill">
-        <input type="radio" name="pf-tipo" value="postparto">
-        <span>Postparto</span>
-      </label>
-    </div>
-  </div>
-
-  <button class="pf-btn" id="pf-calcular">Calcular mi talla</button>
-  <div class="pf-error" id="pf-error">Por favor ingresa tu cintura y tu cadera en centímetros para calcular tu talla.</div>
-
-  <div class="pf-result" id="pf-result">
-    <div class="pf-result-tag">
-      <div class="pf-result-label">Tu talla Pacific Fajas</div>
-      <div class="pf-result-size" id="pf-res-talla">—</div>
-      <div class="pf-result-equiv">
-        <div>Colombia<b id="pf-res-col">—</b></div>
-        <div>USA<b id="pf-res-usa">—</b></div>
+    <div class="pf-field-row">
+      <div>
+        <label for="pf-cintura">Cintura (cm)</label>
+        <input type="number" id="pf-cintura" min="40" max="160" placeholder="Ej: 72">
+      </div>
+      <div>
+        <label for="pf-cadera">Cadera (cm)</label>
+        <input type="number" id="pf-cadera" min="50" max="170" placeholder="Ej: 98">
       </div>
     </div>
-    <div class="pf-result-msg" id="pf-res-msg"></div>
 
-    <div class="pf-meter-wrap">
-      <div>
-        <div class="pf-meter-label"><span>Cintura</span><span id="pf-meter-cintura-val">—</span></div>
-        <div class="pf-meter-track">
-          <div class="pf-meter-fill" id="pf-meter-cintura-fill"></div>
-          <div class="pf-meter-dot" id="pf-meter-cintura-dot"></div>
+    <div class="pf-field-full">
+      <label>¿Cuál es tu situación actual?</label>
+      <div class="pf-radio-group">
+        <label class="pf-radio-pill">
+          <input type="radio" name="pf-tipo" value="sin" checked>
+          <span>Uso diario / Moldeadora</span>
+        </label>
+        <label class="pf-radio-pill">
+          <input type="radio" name="pf-tipo" value="post">
+          <span>Postquirúrgica</span>
+        </label>
+        <label class="pf-radio-pill">
+          <input type="radio" name="pf-tipo" value="postparto">
+          <span>Postparto</span>
+        </label>
+      </div>
+    </div>
+
+    <button class="pf-btn" id="pf-calcular">Calcular mi talla</button>
+    <div class="pf-error" id="pf-error">Por favor ingresa tu cintura y tu cadera en centímetros para calcular tu talla.</div>
+
+    <div class="pf-result" id="pf-result">
+      <div class="pf-result-tag">
+        <div class="pf-result-label">Tu talla Pacific Fajas</div>
+        <div class="pf-result-size" id="pf-res-talla">—</div>
+        <div class="pf-result-equiv">
+          <div>Colombia<b id="pf-res-col">—</b></div>
+          <div>USA<b id="pf-res-usa">—</b></div>
         </div>
       </div>
-      <div>
-        <div class="pf-meter-label"><span>Cadera</span><span id="pf-meter-cadera-val">—</span></div>
-        <div class="pf-meter-track">
-          <div class="pf-meter-fill" id="pf-meter-cadera-fill"></div>
-          <div class="pf-meter-dot" id="pf-meter-cadera-dot"></div>
+      <div class="pf-result-msg" id="pf-res-msg"></div>
+
+      <div class="pf-meter-wrap">
+        <div>
+          <div class="pf-meter-label"><span>Cintura</span><span id="pf-meter-cintura-val">—</span></div>
+          <div class="pf-meter-track">
+            <div class="pf-meter-fill" id="pf-meter-cintura-fill"></div>
+            <div class="pf-meter-dot" id="pf-meter-cintura-dot"></div>
+          </div>
+        </div>
+        <div>
+          <div class="pf-meter-label"><span>Cadera</span><span id="pf-meter-cadera-val">—</span></div>
+          <div class="pf-meter-track">
+            <div class="pf-meter-fill" id="pf-meter-cadera-fill"></div>
+            <div class="pf-meter-dot" id="pf-meter-cadera-dot"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -422,8 +440,10 @@
   function findIndexByValue(value, field){
     var minKey = field === 'cintura' ? 'cMin' : 'hMin';
     var maxKey = field === 'cintura' ? 'cMax' : 'hMax';
+
     if(value < sizes[0][minKey]) return 0;
     if(value > sizes[sizes.length-1][maxKey]) return sizes.length-1; 
+
     for(var i=0; i<sizes.length; i++){
       if(value >= sizes[i][minKey] && value <= sizes[i][maxKey]){
         return i;
@@ -436,7 +456,9 @@
     var maxKey = field === 'cintura' ? 'cMax' : 'hMax';
     var minKeyNext = field === 'cintura' ? 'cMin' : 'hMin';
     if(baseIndex < sizes.length-1 && value === sizes[baseIndex][maxKey] && value === sizes[baseIndex+1][minKeyNext]){
-      if(tipo === 'post' || tipo === 'postparto') return baseIndex+1;
+      if(tipo === 'post' || tipo === 'postparto'){
+        return baseIndex+1;
+      }
       return baseIndex;
     }
     return baseIndex;
@@ -456,27 +478,51 @@
     errorBox.style.display = 'none';
 
     var tipo = document.querySelector('input[name="pf-tipo"]:checked').value;
-    var idxCintura = resolveBoundary(cintura, 'cintura', findIndexByValue(cintura, 'cintura'), tipo);
-    var idxCadera = resolveBoundary(cadera, 'cadera', findIndexByValue(cadera, 'cadera'), tipo);
+
+    var idxCintura = findIndexByValue(cintura, 'cintura');
+    idxCintura = resolveBoundary(cintura, 'cintura', idxCintura, tipo);
+
+    var idxCadera = findIndexByValue(cadera, 'cadera');
+    idxCadera = resolveBoundary(cadera, 'cadera', idxCadera, tipo);
 
     var finalIndex = idxCadera;
     var distintas = idxCintura !== idxCadera;
-    
-    if(tipo === 'sin' && finalIndex > 0) finalIndex = finalIndex - 1;
-    
     var s = sizes[finalIndex];
+
+    var tallaAjustada = false;
+    if(tipo === 'sin' && finalIndex > 0){
+      finalIndex = finalIndex - 1;
+      tallaAjustada = true;
+    }
+    s = sizes[finalIndex];
+
     document.getElementById('pf-res-talla').textContent = s.talla;
     document.getElementById('pf-res-col').textContent = s.col;
     document.getElementById('pf-res-usa').textContent = s.usa;
 
-    var msg = (distintas) ? 'Tu cintura y cadera sugieren tallas distintas. Te recomendamos guiarte por la cadera.' : 'Esta es tu talla recomendada.';
+    var msg = '';
+    if(cadera > sizes[sizes.length-1].hMax || cintura > sizes[sizes.length-1].cMax){
+      msg = 'Tu medida supera nuestra tabla estándar. Escríbenos por WhatsApp y te ayudamos a encontrar la opción ideal.';
+    } else if(cadera < sizes[0].hMin || cintura < sizes[0].cMin){
+      msg = 'Tu medida está por debajo de la tabla estándar. Escríbenos por WhatsApp para confirmar tu talla.';
+    } else if(distintas){
+      msg = 'Tu cintura corresponde a talla ' + sizes[idxCintura].talla + ', pero tu cadera corresponde a talla ' + sizes[idxCadera].talla + '. Te recomendamos guiarte por la cadera' + (tallaAjustada ? ', y como es de uso diario/moldeadora, bajamos una talla para un ajuste más ceñido: ' + s.talla + '.' : ': ' + s.talla + '.');
+    } else if(tipo === 'post'){
+      msg = 'Por ser uso postquirúrgico, te recomendamos esta talla priorizando una compresión segura y cómoda.';
+    } else if(tipo === 'postparto'){
+      msg = 'Para etapa postparto, esta talla te dará el soporte adecuado sin quedar demasiado ajustada.';
+    } else if(tallaAjustada){
+      msg = 'Como es de uso diario/moldeadora, te recomendamos una talla más ceñida que la calculada por tu cadera, para un mejor moldeado.';
+    } else {
+      msg = 'Recuerda: si estás entre dos tallas y es una prenda moldeadora, puedes elegir la más ajustada si la toleras bien.';
+    }
     document.getElementById('pf-res-msg').textContent = msg;
 
+    // ---- medidor visual ----
     var overallCMin = sizes[0].cMin, overallCMax = sizes[sizes.length-1].cMax;
     var overallHMin = sizes[0].hMin, overallHMax = sizes[sizes.length-1].hMax;
     var pctC = Math.min(100, Math.max(0, (cintura - overallCMin) / (overallCMax - overallCMin) * 100));
     var pctH = Math.min(100, Math.max(0, (cadera - overallHMin) / (overallHMax - overallHMin) * 100));
-    
     document.getElementById('pf-meter-cintura-val').textContent = cintura + ' cm';
     document.getElementById('pf-meter-cadera-val').textContent = cadera + ' cm';
     document.getElementById('pf-meter-cintura-fill').style.width = pctC + '%';
@@ -494,5 +540,14 @@
     calcularTalla();
     document.getElementById('pf-result').scrollIntoView({behavior:'smooth', block:'nearest'});
   });
+
+  document.querySelectorAll('input[name="pf-tipo"]').forEach(function(radio){
+    radio.addEventListener('change', function(){
+      if(document.getElementById('pf-result').style.display === 'block'){
+        calcularTalla();
+      }
+    });
+  });
+
 })();
 </script>
