@@ -257,11 +257,16 @@
   border-top:1px solid #d7e0da;
   padding-top:12px;
 }
-#pf-tallas-wrap .pf-result-equiv div{font-size:13px;color:#46554d;}
+#pf-tallas-wrap .pf-result-equiv div{font-size:13px;color:#46554d;order:2;}
 #pf-tallas-wrap .pf-result-equiv b{
   display:block;
   font-size:18px;
   color:var(--pf-ink);
+}
+#pf-tallas-wrap .pf-result-equiv div.pf-equiv-primary{order:1;}
+#pf-tallas-wrap .pf-result-equiv div.pf-equiv-primary b{
+  font-size:22px;
+  color:var(--pf-gold);
 }
 #pf-tallas-wrap .pf-result-msg{
   font-size:12.5px;
@@ -386,6 +391,20 @@
       </div>
     </div>
 
+    <div class="pf-field-full">
+      <label>¿En qué sistema prefieres ver tu talla primero?</label>
+      <div class="pf-radio-group">
+        <label class="pf-radio-pill">
+          <input type="radio" name="pf-sistema" value="col" checked>
+          <span>Colombia</span>
+        </label>
+        <label class="pf-radio-pill">
+          <input type="radio" name="pf-sistema" value="usa">
+          <span>USA</span>
+        </label>
+      </div>
+    </div>
+
     <button class="pf-btn" id="pf-calcular">Calcular mi talla</button>
     <div class="pf-error" id="pf-error">Por favor ingresa tu cintura y tu cadera en centímetros para calcular tu talla.</div>
 
@@ -394,8 +413,8 @@
         <div class="pf-result-label">Tu talla Pacific Fajas</div>
         <div class="pf-result-size" id="pf-res-talla">—</div>
         <div class="pf-result-equiv">
-          <div>Colombia<b id="pf-res-col">—</b></div>
-          <div>USA<b id="pf-res-usa">—</b></div>
+          <div id="pf-equiv-col">Colombia<b id="pf-res-col">—</b></div>
+          <div id="pf-equiv-usa">USA<b id="pf-res-usa">—</b></div>
         </div>
       </div>
       <div class="pf-result-msg" id="pf-res-msg"></div>
@@ -425,16 +444,18 @@
 
 <script>
 (function(){
+  // Tabla base = tallas de USO DIARIO / MOLDEADORA.
+  // Postquirúrgica y postparto se calculan una talla más arriba (ver calcularTalla).
   var sizes = [
     {talla:"XS",  col:"4",  usa:"0 - 2", cMin:60,  cMax:65,  hMin:87,  hMax:92},
-    {talla:"S",   col:"6",  usa:"4",     cMin:65,  cMax:70,  hMin:92,  hMax:97},
-    {talla:"M",   col:"8",  usa:"6",     cMin:70,  cMax:75,  hMin:97,  hMax:102},
-    {talla:"L",   col:"10", usa:"8",     cMin:75,  cMax:81,  hMin:102, hMax:107},
-    {talla:"XL",  col:"12", usa:"10",    cMin:81,  cMax:86,  hMin:107, hMax:112},
-    {talla:"2XL", col:"14", usa:"12",    cMin:86,  cMax:91,  hMin:112, hMax:117},
-    {talla:"3XL", col:"16", usa:"14",    cMin:91,  cMax:96,  hMin:117, hMax:122},
-    {talla:"4XL", col:"18", usa:"16",    cMin:96,  cMax:101, hMin:122, hMax:127},
-    {talla:"5XL", col:"20", usa:"18",    cMin:101, cMax:107, hMin:127, hMax:132}
+    {talla:"S",   col:"6",  usa:"4",     cMin:66,  cMax:70,  hMin:93,  hMax:97},
+    {talla:"M",   col:"8",  usa:"6",     cMin:71,  cMax:75,  hMin:97,  hMax:102},
+    {talla:"L",   col:"10", usa:"8",     cMin:76,  cMax:81,  hMin:102, hMax:107},
+    {talla:"XL",  col:"12", usa:"10",    cMin:82,  cMax:86,  hMin:108, hMax:112},
+    {talla:"2XL", col:"14", usa:"12",    cMin:87,  cMax:91,  hMin:113, hMax:117},
+    {talla:"3XL", col:"16", usa:"14",    cMin:92,  cMax:96,  hMin:118, hMax:122},
+    {talla:"4XL", col:"18", usa:"16",    cMin:96,  cMax:101, hMin:123, hMax:127},
+    {talla:"5XL", col:"20", usa:"18",    cMin:102, cMax:107, hMin:128, hMax:132}
   ];
 
   function findIndexByValue(value, field){
@@ -452,15 +473,10 @@
     return sizes.length-1;
   }
 
-  function resolveBoundary(value, field, baseIndex, tipo){
-    var maxKey = field === 'cintura' ? 'cMax' : 'hMax';
-    var minKeyNext = field === 'cintura' ? 'cMin' : 'hMin';
-    if(baseIndex < sizes.length-1 && value === sizes[baseIndex][maxKey] && value === sizes[baseIndex+1][minKeyNext]){
-      if(tipo === 'post' || tipo === 'postparto'){
-        return baseIndex+1;
-      }
-      return baseIndex;
-    }
+  function resolveBoundary(value, field, baseIndex){
+    // Si el valor cae justo en el límite compartido por dos tallas (ej: 96 cm
+    // de cintura, que es el máximo de 3XL y el mínimo de 4XL), nos quedamos
+    // con la talla más pequeña de las dos por defecto.
     return baseIndex;
   }
 
@@ -478,27 +494,39 @@
     errorBox.style.display = 'none';
 
     var tipo = document.querySelector('input[name="pf-tipo"]:checked').value;
+    var sistema = document.querySelector('input[name="pf-sistema"]:checked').value;
 
     var idxCintura = findIndexByValue(cintura, 'cintura');
-    idxCintura = resolveBoundary(cintura, 'cintura', idxCintura, tipo);
+    idxCintura = resolveBoundary(cintura, 'cintura', idxCintura);
 
     var idxCadera = findIndexByValue(cadera, 'cadera');
-    idxCadera = resolveBoundary(cadera, 'cadera', idxCadera, tipo);
+    idxCadera = resolveBoundary(cadera, 'cadera', idxCadera);
 
-    var finalIndex = idxCadera;
+    // La tabla base representa la talla de USO DIARIO / MOLDEADORA.
+    // Si cintura y cadera caen en tallas distintas, nos guiamos por la más grande.
     var distintas = idxCintura !== idxCadera;
-    var s = sizes[finalIndex];
+    var usoDiarioIndex = distintas ? Math.max(idxCintura, idxCadera) : idxCadera;
 
-    var tallaAjustada = false;
-    if(tipo === 'sin' && finalIndex > 0){
-      finalIndex = finalIndex - 1;
-      tallaAjustada = true;
+    // Postquirúrgica y postparto: una talla más que la de uso diario.
+    var finalIndex = usoDiarioIndex;
+    var tallaSubida = false;
+    if(tipo === 'post' || tipo === 'postparto'){
+      if(usoDiarioIndex < sizes.length - 1){
+        finalIndex = usoDiarioIndex + 1;
+        tallaSubida = true;
+      }
     }
-    s = sizes[finalIndex];
+    var s = sizes[finalIndex];
 
     document.getElementById('pf-res-talla').textContent = s.talla;
     document.getElementById('pf-res-col').textContent = s.col;
     document.getElementById('pf-res-usa').textContent = s.usa;
+
+    // ---- orden y énfasis según el sistema preferido (Colombia / USA) ----
+    var colWrap = document.getElementById('pf-equiv-col');
+    var usaWrap = document.getElementById('pf-equiv-usa');
+    colWrap.classList.toggle('pf-equiv-primary', sistema === 'col');
+    usaWrap.classList.toggle('pf-equiv-primary', sistema === 'usa');
 
     var msg = '';
     if(cadera > sizes[sizes.length-1].hMax || cintura > sizes[sizes.length-1].cMax){
@@ -506,13 +534,11 @@
     } else if(cadera < sizes[0].hMin || cintura < sizes[0].cMin){
       msg = 'Tu medida está por debajo de la tabla estándar. Escríbenos por WhatsApp para confirmar tu talla.';
     } else if(distintas){
-      msg = 'Tu cintura corresponde a talla ' + sizes[idxCintura].talla + ', pero tu cadera corresponde a talla ' + sizes[idxCadera].talla + '. Te recomendamos guiarte por la cadera' + (tallaAjustada ? ', y como es de uso diario/moldeadora, bajamos una talla para un ajuste más ceñido: ' + s.talla + '.' : ': ' + s.talla + '.');
+      msg = 'Tu cintura corresponde a talla ' + sizes[idxCintura].talla + ', pero tu cadera corresponde a talla ' + sizes[idxCadera].talla + '. Te recomendamos guiarte por la talla más grande de las dos' + (tallaSubida ? ', y por ser uso ' + (tipo === 'post' ? 'postquirúrgico' : 'postparto') + ' subimos una talla adicional para mayor comodidad: ' + s.talla + '.' : ': ' + s.talla + '.');
     } else if(tipo === 'post'){
-      msg = 'Por ser uso postquirúrgico, te recomendamos esta talla priorizando una compresión segura y cómoda.';
+      msg = tallaSubida ? 'Por ser uso postquirúrgico, te recomendamos una talla más que la de uso diario, priorizando una compresión segura y cómoda.' : 'Por ser uso postquirúrgico, te recomendamos esta talla priorizando una compresión segura y cómoda.';
     } else if(tipo === 'postparto'){
-      msg = 'Para etapa postparto, esta talla te dará el soporte adecuado sin quedar demasiado ajustada.';
-    } else if(tallaAjustada){
-      msg = 'Como es de uso diario/moldeadora, te recomendamos una talla más ceñida que la calculada por tu cadera, para un mejor moldeado.';
+      msg = tallaSubida ? 'Para etapa postparto, te recomendamos una talla más que la de uso diario, para un soporte adecuado sin quedar demasiado ajustada.' : 'Para etapa postparto, esta talla te dará el soporte adecuado sin quedar demasiado ajustada.';
     } else {
       msg = 'Recuerda: si estás entre dos tallas y es una prenda moldeadora, puedes elegir la más ajustada si la toleras bien.';
     }
@@ -542,6 +568,14 @@
   });
 
   document.querySelectorAll('input[name="pf-tipo"]').forEach(function(radio){
+    radio.addEventListener('change', function(){
+      if(document.getElementById('pf-result').style.display === 'block'){
+        calcularTalla();
+      }
+    });
+  });
+
+  document.querySelectorAll('input[name="pf-sistema"]').forEach(function(radio){
     radio.addEventListener('change', function(){
       if(document.getElementById('pf-result').style.display === 'block'){
         calcularTalla();
